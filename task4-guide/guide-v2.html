@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>Task 4 说明（Claude Code）</title>
+<style>
+  @page { size: A4; margin: 16mm 15mm; }
+  body { font-family: "WenQuanYi Zen Hei", sans-serif; font-size: 10.5pt; line-height: 1.65; color: #1f2328; }
+  h1 { font-size: 19pt; margin: 0 0 2px; }
+  .sub { color: #555; margin-bottom: 12px; }
+  h2 { font-size: 13.5pt; border-bottom: 2px solid #2563eb; padding-bottom: 3px; margin: 20px 0 8px; page-break-after: avoid; }
+  h3 { font-size: 11.5pt; margin: 14px 0 5px; page-break-after: avoid; }
+  table { border-collapse: collapse; width: 100%; margin: 6px 0 10px; }
+  tr { page-break-inside: avoid; }
+  th, td { border: 1px solid #cfd4da; padding: 5px 7px; vertical-align: top; text-align: left; }
+  th { background: #eef2f7; white-space: nowrap; }
+  code, pre { font-family: "WenQuanYi Zen Hei Mono", monospace; font-size: 9.5pt; }
+  code { background: #f1f3f5; padding: 1px 4px; border-radius: 3px; }
+  pre { background: #f1f3f5; padding: 6px 9px; border-radius: 5px; white-space: pre-wrap; word-break: break-all; margin: 4px 0; }
+  a { color: #1d4ed8; word-break: break-all; }
+  .note { background: #f5f7fa; border-left: 4px solid #94a3b8; padding: 6px 10px; margin: 8px 0; }
+  .step { page-break-inside: avoid; margin-bottom: 6px; }
+  .link { margin: 3px 0; }
+  ol, ul { margin: 3px 0 6px; padding-left: 22px; }
+  li { margin: 2px 0; }
+</style>
+</head>
+<body>
+
+<h1>Task 4 说明（Claude Code · macOS 桌面版或终端版）</h1>
+<div class="sub">本文件把原说明文档、任务 PDF、演示视频、问卷和工具的信息合并到一处。内容以原文为准。</div>
+
+<h2>本次会用到的所有文件、程序和网页</h2>
+<table>
+<tr><th>名称</th><th>在哪里</th><th>作用</th><th>第几步用</th></tr>
+<tr><td>Start Recorder.command</td><td>任务包根目录</td><td>打开 Tools 里的 Computer Recorder（会先解除 macOS 的下载隔离标记）</td><td>2、5、7</td></tr>
+<tr><td>Computer Recorder</td><td>Tools 文件夹</td><td>录屏工具，截图保存在「下载/records」<br>GitHub：<a href="https://github.com/zorazrw/workflow-induction-toolkit">github.com/zorazrw/workflow-induction-toolkit</a></td><td>2、5、7</td></tr>
+<tr><td>Start Claude Code (Desktop).command</td><td>任务包根目录</td><td>用研究专用的设置目录（<code>~/.task4-claude</code>）打开 Claude 桌面应用；如果桌面应用已在运行，会先将其退出。不影响你原来的 Claude 设置</td><td>4A</td></tr>
+<tr><td>Start Claude Code (Terminal).command</td><td>任务包根目录</td><td>用同一个研究专用设置目录，在 Task 4 Starter 文件夹里启动终端版 Claude Code</td><td>4B</td></tr>
+<tr><td>Task 4 Starter</td><td>任务包根目录</td><td>项目文件夹，所有代码都放在这里；里面有任务说明 Task 4.pdf</td><td>4、6、9、10</td></tr>
+<tr><td>Agent Trajectory Logger</td><td>Tools 文件夹</td><td>把 Claude Code 会话导出为 ZIP<br>GitHub：<a href="https://github.com/joebaumann/upskilling-agent-log-exporter">github.com/joebaumann/upskilling-agent-log-exporter</a></td><td>9</td></tr>
+<tr><td>Check Submission.command</td><td>任务包根目录</td><td>检查最终 ZIP 是否完整（调用 Tools 里的 submission-check）</td><td>10</td></tr>
+<tr><td>Claude Code 安装</td><td>网页 / 终端</td><td>如未安装：<a href="https://code.claude.com/docs/en/setup">code.claude.com/docs/en/setup</a><br>macOS 终端安装命令：<code>curl -fsSL https://claude.ai/install.sh | bash</code></td><td>3</td></tr>
+<tr><td>问卷与最终上传</td><td>网页</td><td><a href="https://project-planner-post-task.glisteningchaff.chatgpt.site">project-planner-post-task.glisteningchaff.chatgpt.site</a></td><td>8、10</td></tr>
+<tr><td>演示视频（4 个）</td><td>Google Drive</td><td>见对应步骤</td><td>4、5–6、7&amp;9</td></tr>
+</table>
+
+<h2>1. 合同前说明</h2>
+<p>再次感谢你申请参加本项目。</p>
+<p>提醒一下：你将使用 Claude Code 或 Codex 完成一个小型软件工程项目。工作时用 <b>Computer Recorder</b>（在任务包 / <a href="https://github.com/zorazrw/workflow-induction-toolkit">GitHub</a> 中）录制截图，用 <b>Agent Trajectory Logger</b>（在任务包 / <a href="https://github.com/joebaumann/upskilling-agent-log-exporter">GitHub</a> 中）导出编程会话，包括你的对话和 AI 的工具操作记录。</p>
+<p>你将在任务后问卷的最后一部分，一起上传录屏、会话日志，以及最终代码和 README。这个项目可以放进你的作品集。</p>
+
+<h2>2. 开始说明</h2>
+<p>你好，再次感谢你参加本研究。如有不清楚的地方或遇到设置问题，请<b>回复邀请邮件</b>。</p>
+<p>你被分配使用 <b>Claude Code</b> 完成 Task 4。解压收到的 ZIP，打开 <b>Task 4 Starter</b> 文件夹，里面有任务说明 <b>Task 4.pdf</b>（全文见本文件附录）。请从下面的桌面版和终端版中选一种，并全程使用。本任务包和演示视频都针对 Mac。</p>
+<p>你需要在 Computer Recorder 运行的状态下完成编程任务，然后填写任务后问卷。在问卷最后一页上传一个 ZIP，里面包含录屏、会话日志 ZIP，以及最终代码和 README。</p>
+<p><b>编程时间为 1 小时，从你发出第一条任务指令时开始计时。</b></p>
+<div class="link">问卷与最终上传：<a href="https://project-planner-post-task.glisteningchaff.chatgpt.site">https://project-planner-post-task.glisteningchaff.chatgpt.site</a></div>
+
+<h2>3. 分步说明</h2>
+
+<div class="step"><h3>第 1 步　解压任务包</h3>
+<p>解压后的文件夹包含：Check Submission.command、Start Claude Code (Desktop).command、Start Claude Code (Terminal).command、Start Recorder.command、Task 4 Instructions - Claude Code.docx、Task 4 Starter、Tools。</p></div>
+
+<div class="step"><h3>第 2 步　设置 Computer Recorder</h3>
+<p>在 Mac 上双击任务包里的 <b>Start Recorder.command</b>，它会打开 Tools 文件夹里的 Computer Recorder。如果 macOS 拦截，见第 4 步末尾的「如果 macOS 拦截启动文件」。按应用里的 <b>Set Up</b> 提示操作，直到以下 4 项都显示 <b>Granted</b>：</p>
+<table>
+<tr><th>项目</th><th>对应的 macOS 系统设置</th></tr>
+<tr><td>Downloads Folder</td><td>允许访问「下载」文件夹</td></tr>
+<tr><td>Screen Recording</td><td>隐私与安全性 → 屏幕与系统音频录制</td></tr>
+<tr><td>Accessibility</td><td>隐私与安全性 → 辅助功能</td></tr>
+<tr><td>Input Monitoring</td><td>隐私与安全性 → 输入监控</td></tr>
+</table>
+<p>每项授权后，回到应用点 <b>Check Again</b>。</p></div>
+
+<div class="step"><h3>第 3 步　准备工具</h3>
+<ul>
+<li>如有需要，安装你选择的 Claude Code 版本：
+  <ul><li>安装说明：<a href="https://code.claude.com/docs/en/setup">https://code.claude.com/docs/en/setup</a></li>
+  <li>终端版 macOS 安装命令：<code>curl -fsSL https://claude.ai/install.sh | bash</code></li>
+  <li>桌面版需要 Claude 桌面应用，安装在「应用程序」文件夹中</li></ul></li>
+<li>如果「下载」文件夹里已有 <b>records</b> 文件夹，先把它移到安全的地方，确保本次研究从全新的录屏开始。</li>
+<li>第 4 步中会提示你登录。</li>
+</ul></div>
+
+<div class="step"><h3>第 4 步　启动指定的编程工具</h3>
+<p>任务包里的 <b>Task 4 Starter</b> 是整个任务的项目文件夹：编程工具必须在这个文件夹中打开，所有代码也都放在这里。</p>
+<p>请<b>不要</b>使用已有的 Claude 聊天或项目，也<b>不要</b>自己输入 <code>claude</code> 来启动 Claude Code。请使用下面的 4A 或 4B，<b>二选一，全程只用这一种</b>。</p>
+<p>请保持提供的设置文件完整、不做修改；不要添加个人指令、技能、记忆、插件或连接器。任务包已把模型设为 <b>Sonnet 5.5、medium 推理强度</b>，请不要更改。</p>
+
+<h3>4A — 桌面版</h3>
+<ol>
+<li>双击 <b>Start Claude Code (Desktop).command</b>。</li>
+<li>在 <b>Code</b> 标签中，点 <b>Choose a folder to work in → Open folder</b>，选中任务包里的 <b>Task 4 Starter</b> 文件夹，点 <b>Open</b>。</li>
+<li>在该文件夹中开始一个新会话。如有提示，登录或信任该文件夹。</li>
+<li>发送第一条指令前，检查模型选择器显示 <b>Sonnet 5.5</b> 和 <b>Medium</b>；如果显示的不是这两项，请手动选上。</li>
+</ol>
+<div class="link">▶ 演示视频：第 4A 步 — 启动 Claude Code 桌面版（55 秒）<br><a href="https://drive.google.com/file/d/1bmeYzIV8Xsit40WvX9V4cRX1ddOTbnjr/view">https://drive.google.com/file/d/1bmeYzIV8Xsit40WvX9V4cRX1ddOTbnjr/view</a></div>
+
+<h3>4B — 终端版（CLI）</h3>
+<ol>
+<li>双击 <b>Start Claude Code (Terminal).command</b>，如有提示就登录。启动文件会自动在 Task 4 Starter 文件夹中打开 Claude Code。</li>
+<li>按首次设置的提示操作。</li>
+<li>出现文件夹信任提示时，选择 <b>"Yes, I trust this folder"</b> 并按回车。</li>
+</ol>
+<div class="link">▶ 演示视频：第 4B 步 — 启动 Claude Code 终端版（57 秒）<br><a href="https://drive.google.com/file/d/1aoJQaoxPLyMq5jHTH8iyRZBuqacsKhby/view">https://drive.google.com/file/d/1aoJQaoxPLyMq5jHTH8iyRZBuqacsKhby/view</a></div>
+
+<h3>如果 macOS 拦截启动文件</h3>
+<p>前往 <b>系统设置 → 隐私与安全性 → 仍要打开（Open Anyway）</b>，然后再次打开。如果浏览器登录时提示 localhost 被拦截，换一个浏览器试试。如果仍然无法启动，请回复邀请邮件。</p></div>
+
+<div class="step"><h3>第 5 步　开始录屏</h3>
+<p>登录完成、会话准备好后，在 Computer Recorder 中点 <b>Start</b>。显示 <b>Running</b> 后继续第 6 步。<b>录屏一直保持到第 7 步。</b></p></div>
+
+<div class="step"><h3>第 6 步　阅读任务并开始</h3>
+<p>打开 Task 4 Starter 文件夹里的 <b>Task 4.pdf</b> 阅读（全文见附录）。然后发出你的第一条任务指令，<b>同时开始 1 小时计时</b>。全程使用同一个会话。如果到时间还没完成，停下来，提交已完成的部分。</p>
+<div class="link">▶ 演示视频：第 5–6 步 — 开始录屏并打开任务 PDF（32 秒）<br><a href="https://drive.google.com/file/d/1DNiRY-5JRx_kAmL3u1zFUNh5T0LcYN8R/view">https://drive.google.com/file/d/1DNiRY-5JRx_kAmL3u1zFUNh5T0LcYN8R/view</a></div></div>
+
+<div class="step"><h3>第 7 步　停止录屏</h3>
+<p>完成任务或到达时间限制时，在 Computer Recorder 中点 <b>Stop</b>。录屏保存在 <b>下载/records</b> 中。检查 <b>下载/records/screenshots</b> 里最新的文件是不是最近几分钟的；如果不是，请回复邀请邮件告知。</p></div>
+
+<div class="step"><h3>第 8 步　任务结束后立即打开问卷</h3>
+<div class="link">问卷：<a href="https://project-planner-post-task.glisteningchaff.chatgpt.site">https://project-planner-post-task.glisteningchaff.chatgpt.site</a></div>
+<p>登录 Google，填写你报名本研究时使用的邮箱。导出日志之前，请<b>独立回答问题，不要使用 AI</b>。点 <b>Next</b>，在完成第 9 步期间保持 <b>Final submission</b> 页面打开。</p></div>
+
+<div class="step"><h3>第 9 步　导出会话日志</h3>
+<ol>
+<li>打开任务包 Tools 文件夹里的 <b>Agent Trajectory Logger</b>。如果 macOS 拦截：系统设置 → 隐私与安全性 → 向下滚动 → 点 <b>仍要打开（Open Anyway）</b>，然后再次打开。</li>
+<li>点 <b>Choose project folder</b>，选择任务中使用的同一个项目文件夹（Task 4 Starter）。</li>
+<li>选中你刚完成的会话，点 <b>Save log ZIP</b>。</li>
+</ol>
+<p>如果应用打不开或找不到你的会话，请回复邀请邮件。</p>
+<div class="link">▶ 演示视频：第 7 和第 9 步 — 停止录屏并导出日志（1 分 13 秒）<br><a href="https://drive.google.com/file/d/1ghZlZ2HkynOx26-qRUYVE9VsrSGqSNe4/view">https://drive.google.com/file/d/1ghZlZ2HkynOx26-qRUYVE9VsrSGqSNe4/view</a></div></div>
+
+<div class="step"><h3>第 10 步　检查并上传 ZIP</h3>
+<ol>
+<li>把以下内容放进<b>同一个 ZIP</b>（最大 1 GB）：
+  <ul><li>完整的 <b>records</b> 文件夹（在「下载」中）</li>
+  <li>第 9 步导出的<b>会话日志 ZIP</b></li>
+  <li>你的<b>最终代码和 README</b>（Task 4 Starter 文件夹）</li></ul></li>
+<li>双击你所用任务包里的 <b>Check Submission.command</b>，选择做好的 ZIP。如有提示，按时间和第一条指令选择你的会话。</li>
+<li>根据检查结果处理：
+<table>
+<tr><th>结果</th><th>处理方法</th></tr>
+<tr><td>FIX</td><td>修正问题后再检查一次</td></tr>
+<tr><td>REVIEW</td><td>核对标出的时间段。如果那段时间你在阅读或等待，直接继续</td></tr>
+<tr><td>录屏缺失</td><td>回复邀请邮件</td></tr>
+</table></li>
+<li>回到问卷的 <b>Final submission</b> 页面，点 <b>Add file</b>，上传检查过的 ZIP，然后点 <b>Submit</b>。</li>
+<li>等待页面确认已记录你的回复。</li>
+</ol>
+<div class="link">问卷与最终上传：<a href="https://project-planner-post-task.glisteningchaff.chatgpt.site">https://project-planner-post-task.glisteningchaff.chatgpt.site</a></div></div>
+
+<h2>附录：Task 4.pdf 全文（项目规划器）</h2>
+<h3>项目概述</h3>
+<p>做一个本地运行的网页应用，帮助用户把模糊的项目想法变成具体计划：把项目拆分成任务，并按时间或层级展示结构。只能使用任务包中分配给你的 AI 编程工具。</p>
+<h3>要做什么</h3>
+<ul>
+<li>一个网页应用，用户可以：
+  <ul><li>输入项目标题和简短描述</li><li>把项目拆分成任务和子任务</li></ul></li>
+<li>用一种结构化视图展示任务：
+  <ul><li>简单的任务树（父 / 子），或</li><li>带顺序的时间线式列表</li></ul></li>
+<li>允许用户：
+  <ul><li>添加、编辑和删除任务</li><li>给任务标记基本信息（例如状态或优先级）</li></ul></li>
+<li>在浏览器本地保存项目计划</li>
+</ul>
+<h3>技术限制</h3>
+<ul><li>本地运行（<code>npm run dev</code> 或类似方式）</li><li>只做前端</li><li>状态和计划保存在浏览器存储中（例如 localStorage）</li><li>样式简单即可，清晰比美观更重要</li></ul>
+<h3>验收清单</h3>
+<ul><li>☐ 用户可以创建项目并添加多个任务</li><li>☐ 任务可以结构化（有顺序或有层级）</li><li>☐ 刷新页面后修改仍然保留</li><li>☐ 用户能一眼看懂任务拆分情况</li><li>☐ 支持编辑和删除任务</li><li>☐ 有 README，说明如何安装和运行代码</li></ul>
+<h3>加分项（可选）</h3>
+<ul><li>拖拽排序任务</li><li>任务之间的简单依赖标记</li><li>本地保存多个项目</li></ul>
+<h3>不要做的（非目标）</h3>
+<ul><li>不要 GitHub 或其他外部集成</li><li>不要实时协作</li><li>不要复杂的排期、估时或提醒</li><li>不要拖拽繁重的甘特图（除非非常简单）</li></ul>
+
+</body>
+</html>
