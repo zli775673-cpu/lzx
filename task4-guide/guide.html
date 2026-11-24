@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>Task 4 操作指南</title>
+<style>
+  @page { size: A4; margin: 16mm 15mm; }
+  body { font-family: "WenQuanYi Zen Hei", sans-serif; font-size: 10.5pt; line-height: 1.6; color: #1f2328; }
+  h1 { font-size: 20pt; margin: 0 0 4px; }
+  .sub { color: #555; margin-bottom: 14px; }
+  h2 { font-size: 14pt; border-bottom: 2px solid #2563eb; padding-bottom: 3px; margin: 22px 0 10px; page-break-after: avoid; }
+  h3 { font-size: 11.5pt; margin: 14px 0 6px; page-break-after: avoid; }
+  table { border-collapse: collapse; width: 100%; margin: 6px 0 10px; page-break-inside: auto; }
+  tr { page-break-inside: avoid; }
+  th, td { border: 1px solid #cfd4da; padding: 5px 7px; vertical-align: top; text-align: left; }
+  th { background: #eef2f7; }
+  td.box { width: 22px; text-align: center; font-size: 13pt; }
+  code, pre { font-family: "WenQuanYi Zen Hei Mono", monospace; font-size: 9.5pt; }
+  code { background: #f1f3f5; padding: 1px 4px; border-radius: 3px; }
+  pre { background: #f1f3f5; padding: 7px 9px; border-radius: 5px; white-space: pre-wrap; word-break: break-all; margin: 5px 0; }
+  a { color: #1d4ed8; word-break: break-all; }
+  .warn { background: #fff7e6; border-left: 4px solid #f59e0b; padding: 7px 10px; margin: 8px 0; }
+  .ok { background: #ecfdf3; border-left: 4px solid #16a34a; padding: 7px 10px; margin: 8px 0; }
+  .step { page-break-inside: avoid; margin-bottom: 8px; }
+  ol, ul { margin: 4px 0 6px; padding-left: 22px; }
+  li { margin: 2px 0; }
+</style>
+</head>
+<body>
+
+<h1>Task 4（Claude Code）完整操作指南</h1>
+<div class="sub">适用于 Mac · 终端版（4B）· 按顺序做，每完成一项打勾</div>
+
+<h2>一、开始前自查清单（软件 / 账号 / 环境）</h2>
+<table>
+  <tr><th></th><th>项目</th><th>怎么检查 / 怎么装</th></tr>
+  <tr><td class="box">☐</td><td><b>网络能打开 claude.ai</b></td>
+      <td>浏览器打开 claude.ai 能加载即可。<br>如果显示 <code>ERR_NAME_NOT_RESOLVED</code>，或终端 <code>nslookup claude.ai</code> 显示 <code>REFUSED</code>，说明当前网络在拦截 Claude，请改用<b>手机热点</b>（iPhone 打开「最大兼容性」）。<b>整个任务都用同一个网络。</b></td></tr>
+  <tr><td class="box">☐</td><td><b>Claude 账号</b>（Pro 或以上）</td>
+      <td>能在 claude.ai 登录即可。Claude Code 与网页版共用额度（5 小时滚动重置）。</td></tr>
+  <tr><td class="box">☐</td><td><b>Chrome 浏览器</b></td>
+      <td>用于登录、打开问卷、查看做好的应用。</td></tr>
+  <tr><td class="box">☐</td><td><b>Claude Code（命令行版）</b></td>
+      <td>终端里运行：<pre>curl -fsSL https://claude.ai/install.sh | bash</pre>
+      装完如提示 PATH，再运行：<pre>echo 'export PATH="$HOME/.local/bin:$PATH"' &gt;&gt; ~/.zshrc &amp;&amp; source ~/.zshrc</pre>
+      检查：<code>claude --version</code> 显示版本号即成功。然后<b>退出终端（command+Q）</b>。</td></tr>
+  <tr><td class="box">☐</td><td><b>Node.js（LTS 版）</b></td>
+      <td>到 <a href="https://nodejs.org">https://nodejs.org</a> 下载 <b>macOS Installer (.pkg)</b>，一路「继续 → 安装」。<br>检查：终端运行 <code>node -v</code> 显示版本号。<br>（React + Vite 项目必须有它才能运行。建议<b>提前装好</b>，不占任务时间。）</td></tr>
+  <tr><td class="box">☐</td><td><b>Xcode 命令行工具</b>（可选）</td>
+      <td>系统若弹出「安装软件」窗口，网络快就让它装完；显示要几十小时就点取消。</td></tr>
+  <tr><td class="box">☐</td><td><b>任务包已解压</b></td>
+      <td>文件夹 <code>Task 4 - Claude Code - Collaborative</code>，里面有：Check Submission.command、Start Claude Code (Desktop/Terminal).command、Start Recorder.command、Task 4 Instructions - Claude Code.docx、Task 4 Starter、Tools。</td></tr>
+  <tr><td class="box">☐</td><td><b>清理旧录屏</b></td>
+      <td>「下载」里如已有 <code>records</code> 文件夹，先移到别处。</td></tr>
+  <tr><td class="box">☐</td><td><b>录屏工具 4 项授权</b></td>
+      <td>见第二部分第 2 步，4 项都显示绿色 <b>GRANTED</b>。</td></tr>
+</table>
+
+<div class="warn"><b>macOS 安全拦截的两种处理方法</b>（.command 文件和 Tools 里的程序第一次打开都可能遇到）<br>
+1）提示「无法验证…是否包含恶意软件」：点 <b>完成/Done</b>（<b>不要点「移到废纸篓」</b>）→ 系统设置 → 隐私与安全性 → 往下滚 → <b>仍要打开 / Open Anyway</b> → 输入密码。<br>
+2）提示「<b>已损坏，无法打开</b>（damaged）」：点 <b>取消</b> → 打开一个<b>新的</b>终端窗口（不是 Claude Code 窗口），输入下面这段（末尾有空格），把程序图标拖进终端窗口，再按回车：
+<pre>xattr -dr com.apple.quarantine </pre></div>
+
+<h2>二、完整流程（共 10 步）</h2>
+
+<div class="step"><h3>第 1 步　解压任务包</h3>
+<p>双击收到的 ZIP，得到任务包文件夹。</p></div>
+
+<div class="step"><h3>第 2 步　设置录屏工具（Computer Recorder）</h3>
+<ol>
+<li>双击 <b>Start Recorder.command</b>（被拦截就按上面的方法处理）。</li>
+<li>每一项点 <b>Set Up</b> → 在系统设置里给 <b>Computer Recorder</b> 打开开关 → 回来点 <b>Check Again</b>：
+<table>
+<tr><th>项目</th><th>系统设置位置</th></tr>
+<tr><td>Downloads Folder</td><td>弹窗点「允许」</td></tr>
+<tr><td>Screen Recording</td><td>隐私与安全性 → 屏幕与系统音频录制</td></tr>
+<tr><td>Accessibility</td><td>隐私与安全性 → 辅助功能</td></tr>
+<tr><td>Input Monitoring</td><td>隐私与安全性 → 输入监控</td></tr>
+</table></li>
+<li>提示「退出并重新打开」就照做。User Name 保持 <code>anonymous</code>，Debug / Show Logs 不勾。</li>
+<li>4 项都是 <b>GRANTED</b> 后，<b>先不要点 Start</b>。</li>
+</ol></div>
+
+<div class="step"><h3>第 3 步　准备工具</h3>
+<p>确认第一部分自查清单都打勾了（Claude Code 已安装、Node 已安装、旧 records 已移走）。</p></div>
+
+<div class="step"><h3>第 4 步　启动 Claude Code（4B 终端版）</h3>
+<ol>
+<li>双击 <b>Start Claude Code (Terminal).command</b>（<b>不要</b>自己在终端里输入 claude 启动）。</li>
+<li>选主题：直接回车。登录方式：选 <b>Claude account</b> → 浏览器登录 → 看到「You're all set up for Claude Code」后回到终端。</li>
+<li>「Do you trust the files in this folder?」→ 选 <b>Yes, I trust this folder</b>。</li>
+<li>确认顶部显示 <b>Sonnet 5.5 with medium effort</b>，路径结尾是 <b>Task 4 Starter</b>。<b>不要改模型。</b></li>
+</ol>
+<p>演示视频：<br>
+4B 终端版（57 秒）：<a href="https://drive.google.com/file/d/1aoJQaoxPLyMq5jHTH8iyRZBuqacsKhby/view">https://drive.google.com/file/d/1aoJQaoxPLyMq5jHTH8iyRZBuqacsKhby/view</a><br>
+4A 桌面版（55 秒，如选桌面版）：<a href="https://drive.google.com/file/d/1bmeYzIV8Xsit40WvX9V4cRX1ddOTbnjr/view">https://drive.google.com/file/d/1bmeYzIV8Xsit40WvX9V4cRX1ddOTbnjr/view</a></p>
+<div class="warn">4A 和 4B 只能二选一，<b>全程只用一个</b>；不要加个人设置、插件或连接器。</div></div>
+
+<div class="step"><h3>第 5 步　开始录屏</h3>
+<p>Computer Recorder 里点绿色 <b>Start</b>，右上角显示 <b>Running</b>。</p></div>
+
+<div class="step"><h3>第 6 步　读任务并开始（从这里计时 1 小时）</h3>
+<ol>
+<li>打开 <code>Task 4 Starter/Task 4.pdf</code> 浏览一遍。</li>
+<li>在 Claude Code 的 <code>&gt;</code> 输入框粘贴（command+V）并回车：
+<pre>请阅读这个文件夹里的 Task 4.pdf，按照要求做一个项目规划网页应用。用 React + Vite，数据存在 localStorage，满足 Acceptance checklist 的所有项目，并写一个 README 说明怎么安装和运行。</pre></li>
+<li>它提问时：方向键选择、回车确认，答完到 <b>Submit</b> 回车。问你「可以运行吗」选 <b>Yes</b>。</li>
+<li>做完后输入：<pre>帮我运行一下试试，告诉我在浏览器里打开哪个网址</pre></li>
+<li>在浏览器打开（通常是 <code>http://localhost:5173</code>）按验收清单测试：
+<ul>
+<li>☐ 改项目标题和描述　☐ 添加多个任务　☐ 添加子任务（缩进显示）</li>
+<li>☐ 改状态 / 优先级，进度条变化　☐ 编辑任务　☐ 删除任务</li>
+<li>☐ <b>command+R 刷新后数据还在</b>　☐ 新建第二个项目并切换　☐ 文件夹里有 README</li>
+</ul></li>
+<li>有问题用中文直接告诉 Claude，例如「刷新后数据没了，请修好」。</li>
+</ol>
+<p>小提示：输入框里的灰色文字只是建议，按 <b>Tab</b> 采用，或直接自己输入。<b>esc</b> = 取消/打断。用 <code>/usage</code> 查看额度。<br>
+演示视频（第 5–6 步，32 秒）：<a href="https://drive.google.com/file/d/1DNiRY-5JRx_kAmL3u1zFUNh5T0LcYN8R/view">https://drive.google.com/file/d/1DNiRY-5JRx_kAmL3u1zFUNh5T0LcYN8R/view</a></p>
+<div class="warn">时间以你的 Mac 右上角时钟为准。到 1 小时还没做完也没关系：停下来，提交已有的部分。</div></div>
+
+<div class="step"><h3>第 7 步　停止录屏</h3>
+<ol>
+<li>Computer Recorder 点 <b>Stop</b>，显示 <b>STOPPED</b>。</li>
+<li>访达 → 下载 → <code>records</code> → <code>screenshots</code>，确认最新截图是几分钟前的。没有的话回复邀请邮件。</li>
+<li>在 Claude Code 里输入 <code>/exit</code> 退出。之后<b>不要再往 Claude Code 窗口里粘贴任何东西</b>，需要用终端就按 command+N 开新窗口。</li>
+</ol></div>
+
+<div class="step"><h3>第 8 步　填问卷（不用 AI）</h3>
+<p>问卷链接：<a href="https://project-planner-post-task.glisteningchaff.chatgpt.site">https://project-planner-post-task.glisteningchaff.chatgpt.site</a></p>
+<ul>
+<li>用<b>报名时的邮箱</b>登录 Google。</li>
+<li><b>独立作答，不用 AI</b>（包括用 AI 解释题目）。看不懂就照实写「不清楚」，把握度照实选。</li>
+<li>答完点 Next，停在 <b>Final submission</b> 页面，<b>不要关</b>。</li>
+</ul></div>
+
+<div class="step"><h3>第 9 步　导出会话日志（Agent Trajectory Logger）</h3>
+<ol>
+<li>打开 <code>Tools/Agent Trajectory Logger</code>（被拦截就按第一部分的方法处理）。</li>
+<li>点 <b>Choose project folder</b> → 进入 <b>Task 4 Starter</b> → 直接点 <b>Choose</b>。</li>
+<li>在 Coding sessions 里选首条指令是「请阅读这个文件夹里的 Task 4.pdf…」的那一行。</li>
+<li>点 <b>Save log ZIP</b>，保存到桌面。</li>
+</ol>
+<p>演示视频（第 7、9 步，1 分 13 秒）：<a href="https://drive.google.com/file/d/1ghZlZ2HkynOx26-qRUYVE9VsrSGqSNe4/view">https://drive.google.com/file/d/1ghZlZ2HkynOx26-qRUYVE9VsrSGqSNe4/view</a></p></div>
+
+<div class="step"><h3>第 10 步　打包、检查、上传</h3>
+<ol>
+<li>桌面按 command+shift+N 新建文件夹（如 <code>Task4_submission</code>）。</li>
+<li>按住 <b>option</b> 拖动（复制）三样东西进去：
+<ul><li>下载里的整个 <code>records</code> 文件夹</li>
+<li>第 9 步导出的日志 ZIP</li>
+<li>整个 <code>Task 4 Starter</code> 文件夹（代码 + README）</li></ul></li>
+<li>右键该文件夹 → <b>压缩</b>，得到 ZIP（上限 1 GB）。</li>
+<li>双击任务包里的 <b>Check Submission.command</b>，选这个 ZIP：
+<table>
+<tr><th>结果</th><th>怎么办</th></tr>
+<tr><td>OK</td><td>没问题</td></tr>
+<tr><td>FIX</td><td>按提示改好，再检查一次</td></tr>
+<tr><td>REVIEW</td><td>核对标出的时间；那段时间你在看东西或等待 → <b>直接上传，不用发邮件</b></td></tr>
+<tr><td>缺少录屏</td><td>回复邀请邮件</td></tr>
+</table></li>
+<li>回到问卷 <b>Final submission</b> 页面 → <b>Add file</b> 选 ZIP → 等上传完 → 点 <b>Submit</b>。</li>
+<li>看到「Your response has been recorded」即全部完成。</li>
+</ol></div>
+
+<div class="ok"><b>完成！</b>代码可以放进你的作品集。</div>
+
+<h2>三、常见问题速查</h2>
+<table>
+<tr><th>现象</th><th>原因 / 解决</th></tr>
+<tr><td><code>claude: not found</code></td><td>没装 Claude Code 或 PATH 没设置，见第一部分。</td></tr>
+<tr><td>claude.ai 打不开 / <code>REFUSED</code></td><td>当前网络拦截，换手机热点。</td></tr>
+<tr><td>Mac 连不上 iPhone 热点</td><td>手机停在热点页面别锁屏，打开「最大兼容性」，Mac 的 Wi-Fi 关掉再打开；还不行就重启 Mac，或者用数据线连接。</td></tr>
+<tr><td>安装命令一直没反应</td><td>多半是网络问题：control+C 停止，确认已连热点再试。</td></tr>
+<tr><td>Claude 说没有 Node</td><td>装 Node.js（nodejs.org），然后告诉 Claude「装好 Node 了，帮我运行一下」。</td></tr>
+<tr><td>系统弹出「安装软件，约 48 小时」</td><td>点取消；如显示几分钟，就让它装完。</td></tr>
+<tr><td>程序提示「已损坏」</td><td>用 <code>xattr -dr com.apple.quarantine</code>，见第一部分。</td></tr>
+<tr><td>不小心把命令粘贴进了 Claude Code</td><td>按 esc 清掉；需要终端时按 command+N 开新窗口。</td></tr>
+</table>
+
+<h2>四、所有链接汇总</h2>
+<table>
+<tr><th>用途</th><th>链接</th></tr>
+<tr><td>问卷与最终上传</td><td><a href="https://project-planner-post-task.glisteningchaff.chatgpt.site">https://project-planner-post-task.glisteningchaff.chatgpt.site</a></td></tr>
+<tr><td>Claude 网页 / 登录</td><td><a href="https://claude.ai">https://claude.ai</a></td></tr>
+<tr><td>Claude Code 安装脚本</td><td><code>curl -fsSL https://claude.ai/install.sh | bash</code></td></tr>
+<tr><td>Node.js 下载</td><td><a href="https://nodejs.org">https://nodejs.org</a></td></tr>
+<tr><td>视频：4A 桌面版（55 秒）</td><td><a href="https://drive.google.com/file/d/1bmeYzIV8Xsit40WvX9V4cRX1ddOTbnjr/view">https://drive.google.com/file/d/1bmeYzIV8Xsit40WvX9V4cRX1ddOTbnjr/view</a></td></tr>
+<tr><td>视频：4B 终端版（57 秒）</td><td><a href="https://drive.google.com/file/d/1aoJQaoxPLyMq5jHTH8iyRZBuqacsKhby/view">https://drive.google.com/file/d/1aoJQaoxPLyMq5jHTH8iyRZBuqacsKhby/view</a></td></tr>
+<tr><td>视频：第 5–6 步（32 秒）</td><td><a href="https://drive.google.com/file/d/1DNiRY-5JRx_kAmL3u1zFUNh5T0LcYN8R/view">https://drive.google.com/file/d/1DNiRY-5JRx_kAmL3u1zFUNh5T0LcYN8R/view</a></td></tr>
+<tr><td>视频：第 7、9 步（1 分 13 秒）</td><td><a href="https://drive.google.com/file/d/1ghZlZ2HkynOx26-qRUYVE9VsrSGqSNe4/view">https://drive.google.com/file/d/1ghZlZ2HkynOx26-qRUYVE9VsrSGqSNe4/view</a></td></tr>
+<tr><td>录屏工具 GitHub</td><td><a href="https://github.com/zorazrw/workflow-induction-toolkit">https://github.com/zorazrw/workflow-induction-toolkit</a></td></tr>
+<tr><td>日志导出工具 GitHub</td><td><a href="https://github.com/joebaumann/upskilling-agent-log-exporter">https://github.com/joebaumann/upskilling-agent-log-exporter</a></td></tr>
+<tr><td>Claude Code 权限模式说明</td><td><a href="https://code.claude.com/docs/en/permission-modes">https://code.claude.com/docs/en/permission-modes</a></td></tr>
+</table>
+
+</body>
+</html>
