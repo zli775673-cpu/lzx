@@ -1,0 +1,8 @@
+@page { size: A4; margin: 18mm 18mm; }
+body { font-family: "WenQuanYi Zen Hei", sans-serif; font-size: 11pt; line-height: 1.7; color: #1f2328; }
+h1 { font-size: 18pt; margin: 0 0 10px; }
+h2 { font-size: 14pt; margin: 18px 0 6px; }
+h3 { font-size: 12pt; margin: 14px 0 4px; }
+a { color: #1d4ed8; }
+ol, ul { padding-left: 24px; } li { margin: 4px 0; }
+code { font-family: "WenQuanYi Zen Hei Mono", monospace; background:#f1f3f5; padding:0 3px; }
